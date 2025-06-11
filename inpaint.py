@@ -1967,4 +1967,20 @@ def handler(async_task):
     return async_task
 
 
-task = handler(TASK_PARAMS)
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Process input file with mask")
+
+    parser.add_argument("-i", "--input", type=str, required=True, help="Input file path")
+
+    parser.add_argument("--mask", type=str, required=True, help="Mask file path")
+
+    args = parser.parse_args()
+    image = imread(args.input)
+    mask = imread(args.mask)
+    image_args["image"] = image
+    image_args["mask"] = mask
+    TASK_PARAMS.inpaint_input_image["mask"] = mask
+    TASK_PARAMS.inpaint_input_image["image"] = image
+    task = handler(TASK_PARAMS)
